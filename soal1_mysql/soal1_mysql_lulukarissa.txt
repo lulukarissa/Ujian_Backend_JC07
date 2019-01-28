@@ -1,0 +1,137 @@
+=SOAL 1=
+
+NOMOR 1
+
+(create table users)
+
+     > create table users(
+    -> id int not null auto_increment,
+    -> username varchar(50) not null,
+    -> email varchar(50) not null,
+    -> password varchar(50) not null,
+    -> created_at timestamp default current_timestamp,
+    -> updated_at timestamp default current_timestamp on update current_timestamp,
+    -> primary key (id)
+    -> );
+
+     > describe users;
+
+(insert data to table users)
+
+     > insert into users (username, email, password) values
+    -> ('Andi', 'andi@andi.com', '12345'),
+    -> ('Budi', 'budi@budi.com', '67890'),
+    -> ('Caca', 'caca@caca.com', 'abcde'),
+    -> ('Deni', 'deni@deni.com', 'fghij'),
+    -> ('Euis', 'euis@euis.com', 'klmno'),
+    -> ('Fafa', 'fafa@fafa.com', 'pqrst');
+
+     > select * from users;
+
+NOMOR 2 
+
+(create table courses)
+
+     > create table courses(
+    -> id int not null auto_increment,
+    -> course varchar(50) not null,
+    -> mentor varchar(50) not null,
+    -> title varchar(50) not null,
+    -> primary key (id)
+    -> );
+
+     > describe courses;
+
+(insert data to table courses)
+
+     > insert into courses values
+    -> (null, 'C++', 'Ari', 'Dr.'),
+    -> (null, 'C#', 'Ari', 'Dr.'),
+    -> (null, 'C#', 'Ari', 'Dr.'),
+    -> (null, 'CSS', 'Cania', 'S.Kom'),
+    -> (null, 'HTML', 'Cania', 'S.Kom'),
+    -> (null, 'Javascript', 'Cania', 'S.Kom'),
+    -> (null, 'Python', 'Barry', 'S.T.'),
+    -> (null, 'Micropython', 'Barry', 'S.T.'),
+    -> (null, 'Java', 'Darren', 'M.T.'),
+    -> (null, 'Ruby', 'Darren', 'M.T.');
+
+     > select * from courses;
+
+NOMOR 3
+
+(create table userCourse)
+
+     > create table userCourse(
+    -> id_user int,
+    -> id_course int
+    -> );
+
+     > describe userCourse;
+
+(insert data to table userCourse)
+
+     > insert into userCourse values
+    -> (1,1), (1,2), (1,3), (2,4), (2,5), (2,6), (3,7), (3,8), (3,9),
+    -> (4,1), (4,3), (4,5), (5,2), (5,4), (5,6), (6,7), (6,8), (6,9);
+
+     > select * from dataCourse;
+
+NOMOR 4
+
+(#cara1 menggunakan inner join)
+
+     > select users.id, users.username, courses.course, courses.mentor, courses.title
+    -> from userCourse
+    -> inner join users on users.id = usercourse.id_user
+    -> inner join courses on courses.id = userCourse.id_course;
+
+(#cara2)
+
+     > select users.id, users.username, courses.course, courses.mentor, courses.title
+    -> from users, courses, userCourse
+    -> where users.id = userCourse.id_user and courses.id = userCourse.id_course;
+
+NOMOR 5
+
+(menampilkan title yang bergelar sarjana saja)
+
+     > select users.id, users.username, courses.course, courses.mentor, courses.title
+    -> from userCourse
+    -> inner join users on users.id = usercourse.id_user
+    -> inner join courses on courses.id = userCourse.id_course
+    -> where courses.title in ('S.Kom','S.T.');
+
+NOMOR 6
+
+(menampilkan title selain bergelar sarjana)
+
+     > select users.id, users.username, courses.course, courses.mentor, courses.title
+    -> from userCourse
+    -> inner join users on users.id = usercourse.id_user
+    -> inner join courses on courses.id = userCourse.id_course
+    -> where courses.title in ('Dr.','M.T.');
+
+NOMOR 7
+
+(menampilkan jumlah peserta didik dalam setiap mata kuliah)
+
+     > select courses.course, courses.mentor, courses.title,
+    -> count(users.id) as jumlah_peserta
+    -> from userCourse
+    -> inner join users on users.id = usercourse.id_user
+    -> inner join courses on courses.id = userCourse.id_course
+    -> group by courses.course;
+
+NOMOR 8
+
+(menampilkan jumlah peserta didik dan total fee untuk setiap mentor)
+
+     > select courses.mentor,
+    -> count(users.id) as jumlah_peserta,
+    -> count(users.id) * 20000000 as total_fee
+    -> from userCourse
+    -> inner join users on users.id = usercourse.id_user
+    -> inner join courses on courses.id = userCourse.id_course
+    -> group by courses.mentor;
+
